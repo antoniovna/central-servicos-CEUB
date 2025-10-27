@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e9ebee;
+    color: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+.container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+
+h1 {
+    text-align: center;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+
+.lista-de-tarefas {
+    list-style-type: none; /* Remove os marcadores de lista */
+    padding: 0;
+}
+
+
+.lista-de-tarefas li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: background-color 2s;
+}
+
+
+.lista-de-tarefas li:hover {
+    background-color: #d0d0d0;
+    font-weight: bold;
+}
