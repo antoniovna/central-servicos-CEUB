@@ -1,12 +1,14 @@
 from flask import Flask, render_template
 from urls.adm.setor import bp_setor
 from urls.adm.servico import bp_serv
-
+from urls.adm.empregados import bp_emp
+from urls.adm.locais import bp_loc
 app = Flask(__name__)
 
 app.register_blueprint(bp_setor)
 app.register_blueprint(bp_serv)
-
+app.register_blueprint(bp_emp)
+app.register_blueprint(bp_loc)
 
 @app.route('/')
 def cs():

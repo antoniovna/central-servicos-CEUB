@@ -1,0 +1,69 @@
+{% extends "adm/base_adm.html" %}
+
+{% block content %}
+
+<section class="form-section">
+    <h2>Consultar Locais</h2>
+
+    <form id="consultarForm" class="consultar-form" action="/admin/locais/roda_consultar" method="POST">
+        <div class="form-group">
+            <label for="nme_local">Nome do Local:</label>
+            <input type="text" id="nme_local" name="nme_local" placeholder="Digite o nome para filtrar">
+        </div>
+
+        <div class="form-group">
+            <label for="cod_setor">Setor:</label>
+            <select id="cod_setor" name="cod_setor">
+                <option value="">Todos</option>
+                {% for setor in setores %}
+                    <option value="{{ setor.cod_setor }}">{{ setor.nme_setor }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</section>
+
+<section class="table-section">
+    <p>Total de registros encontrados: <strong>{{ locais | length }}</strong></p>
+
+    <div class="table-container">
+        <table id="locaisTable" class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th>Status</th>
+                    <th>Setor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for loc in locais %}
+                <tr>
+                    <td>{{ loc.idt_local }}</td>
+                    <td>{{ loc.nme_local }}</td>
+                    <td>{{ loc.lat_local }}</td>
+                    <td>{{ loc.lgt_local }}</td>
+                    <td>{{ "Ativo" if loc.sts_local == 'A' else "Inativo" }}</td>
+                    <td>{{ loc.nme_setor if loc.nme_setor else "-" }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6">Nenhum local encontrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if filtro_usado %}
+    <div class="filter-footer">
+        <p>Filtro usado: <strong>{{ filtro_usado }}</strong></p>
+    </div>
+    {% endif %}
+</section>
+
+{% endblock %}

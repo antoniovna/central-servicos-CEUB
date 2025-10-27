@@ -1,0 +1,55 @@
+{% extends "adm/base_adm.html" %}
+
+{% block content %}
+<section class="form-section">
+    <h2>Alterar Local</h2>
+
+    <form id="localAlterarForm" method="POST" action="/adm/locais/salvar_alterar">
+
+        <input type="hidden" name="idt_local" value="{{ loc.idt_local }}">
+
+        <div class="form-group">
+            <label for="nme_local">Nome do Local:</label>
+            <input type="text" id="nme_local" name="nme_local" maxlength="50" required value="{{ loc.nme_local }}">
+        </div>
+
+        <div class="form-group">
+            <label for="lat_local">Latitude:</label>
+            <input type="text" id="lat_local" name="lat_local" maxlength="10" required placeholder="-15.1234567" value="{{ loc.lat_local }}">
+        </div>
+
+        <div class="form-group">
+            <label for="lgt_local">Longitude:</label>
+            <input type="text" id="lgt_local" name="lgt_local" maxlength="11" required placeholder="-047.1234567" value="{{ loc.lgt_local }}">
+        </div>
+
+        <div class="form-group">
+            <label>Status:</label>
+            <div class="radio-group">
+                <label for="sts_ativo">
+                    <input type="radio" id="sts_ativo" name="sts_local" value="A" required {% if loc.sts_local == 'A' %}checked{% endif %}> Ativo
+                </label>
+                <label for="sts_inativo">
+                    <input type="radio" id="sts_inativo" name="sts_local" value="I" required {% if loc.sts_local == 'I' %}checked{% endif %}> Inativo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cod_setor">Setor:</label>
+            <select id="cod_setor" name="cod_setor" required>
+                <option value="" disabled>Selecione um setor</option>
+                {% for setor in lst_setores %}
+                    <option value="{{ setor.cod_setor }}" {% if setor.cod_setor == loc.cod_setor %}selected{% endif %}>
+                        {{ setor.nme_setor }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <button type="button" class="btn btn-secondary" onclick="window.open('/adm/locais/atualizar', '_self')">Cancelar</button>
+
+    </form>
+</section>
+{% endblock %}

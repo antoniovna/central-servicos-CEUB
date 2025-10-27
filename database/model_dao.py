@@ -48,8 +48,10 @@ class DAO:
 
     def read_by_filters(self, filters):
         try:
+            print("veio aqui")
             conditions = []
             for field, operator, value in filters:
+                print("veio aqui 2")
                 operator = operator.lower()
                 column = getattr(self.table, field)  # Obtém a coluna
 
@@ -74,12 +76,13 @@ class DAO:
                 conditions.append(condition)
 
             objs = self.ses.query(self.table).filter(and_(*conditions)).all()
+            print(objs)
             return objs
 
 
         except Exception as e:
             print(f"Erro ao ler registros em {self.table_name} com filtro(s): {e}")
-            return None
+            return []
 
     def read_all(self):
         return self.ses.query(self.table).all()
@@ -143,6 +146,7 @@ class DAO:
         return self.table()
 
     def insert(self, obj):
+        print("Objeto a ser inserido -> ", obj)
         self.ses.add(obj)
         try:
             self.ses.commit()
