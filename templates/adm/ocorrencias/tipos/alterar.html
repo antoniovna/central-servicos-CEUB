@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "adm/base_adm.html" %}
+
+{% block content %}
+<section class="form-section">
+    <h2>Alterar Tipo de Ocorrência</h2>
+
+    <form id="tipoOcorrenciaForm" method="POST" action="/admin/ocorrencias/tipos/salvar_alterar">
+
+         <div class="form-group">
+                   <label for="idt_tipo_ocorrencia">Identificador do Empregado:</label>
+                   <input type="text" name="idt_tipo_ocorrencia" value="{{ oco.idt_tipo_ocorrencia }}"readonly>
+         </div>
+        <div class="form-group">
+            <label for="nme_tipo_ocorrencia">Nome do Tipo de Ocorrência:</label>
+            <input type="text" id="nme_tipo_ocorrencia" name="nme_tipo_ocorrencia" maxlength="50" required value="{{ oco.nme_tipo_ocorrencia }}">
+        </div>
+
+        <div class="form-group">
+            <label>Tipo:</label>
+            <div class="radio-group">
+                <label for="tpo_evento">
+                    <input type="radio" id="tpo_evento" name="tpo_tipo_ocorrencia" value="E" required {% if oco.tpo_tipo_ocorrencia == 'E' %}checked{% endif %}> Evento
+                </label>
+                <label for="tpo_problema">
+                    <input type="radio" id="tpo_problema" name="tpo_tipo_ocorrencia" value="P" required {% if oco.tpo_tipo_ocorrencia == 'P' %}checked{% endif %}> Problema
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="txt_modelo_ocorrencia">Modelo de Texto da Ocorrência:</label>
+            <textarea id="txt_modelo_ocorrencia" name="txt_modelo_ocorrencia" rows="4">{{ oco.txt_modelo_ocorrencia }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Status:</label>
+            <div class="radio-group">
+                <label for="sts_ativo">
+                    <input type="radio" id="sts_ativo" name="sts_tipo_ocorrencia" value="A" required {% if oco.sts_tipo_ocorrencia == 'A' %}checked{% endif %}> Ativo
+                </label>
+                <label for="sts_inativo">
+                    <input type="radio" id="sts_inativo" name="sts_tipo_ocorrencia" value="I" required {% if oco.sts_tipo_ocorrencia == 'I' %}checked{% endif %}> Inativo
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <button type="button" class="btn btn-secondary" onclick="window.open('/admin/ocorrencias/tipos/atualizar', '_self')">Cancelar</button>
+    </form>
+
+    <div id="mensagem" class="mensagem-retorno {{ css_msg }}">{{ msg }}</div>
+</section>
+{% endblock %}</title>
+</head>
+<body>
+
+</body>
+</html>

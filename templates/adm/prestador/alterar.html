@@ -1,0 +1,73 @@
+{% extends "adm/base_adm.html" %}
+
+{% block content %}
+<section class="form-section">
+    <h2>Alterar Prestador</h2>
+
+    <form id="prestadorForm" method="POST" action="/admin/prestador/salva_alterar">
+
+         <div class="form-group">
+                   <label for="idt_prestador">Identificador do Empregado:</label>
+                   <input type="text" name="idt_prestador" value="{{ prestador.idt_prestador }}" readonly>
+         </div>
+        <div class="form-group">
+            <label for="nme_prestador">Nome do Prestador:</label>
+            <input type="text" id="nme_prestador" name="nme_prestador" maxlength="50" required value="{{ prestador.nme_prestador }}">
+        </div>
+
+        <div class="form-group">
+            <label for="mat_prestador">Matrícula:</label>
+            <input type="text" id="mat_prestador" name="mat_prestador" maxlength="10" required value="{{ prestador.mat_prestador }}">
+        </div>
+
+        <div class="form-group">
+            <label for="eml_prestador">E-mail:</label>
+            <input type="email" id="eml_prestador" name="eml_prestador" maxlength="50" required value="{{ prestador.eml_prestador }}">
+        </div>
+
+        <div class="form-group">
+            <label for="tel_prestador">Telefone:</label>
+            <input type="text" id="tel_prestador" name="tel_prestador" maxlength="20" value="{{ prestador.tel_prestador }}">
+        </div>
+
+        <div class="form-group">
+            <label for="rml_prestador">Ramal:</label>
+            <input type="text" id="rml_prestador" name="rml_prestador" maxlength="10" value="{{ prestador.rml_prestador }}">
+        </div>
+
+        <div class="form-group">
+            <label for="pwd_prestador">Nova Senha:</label>
+            <input type="password" id="pwd_prestador" name="pwd_prestador" maxlength="128" placeholder="Deixe em branco para não alterar">
+        </div>
+
+        <div class="form-group">
+            <label>Status:</label>
+            <div class="radio-group">
+                <label for="sts_ativo">
+                    <input type="radio" id="sts_ativo" name="sts_prestador" value="A" required {% if prestador.sts_prestador == 'A' %}checked{% endif %}> Ativo
+                </label>
+                <label for="sts_inativo">
+                    <input type="radio" id="sts_inativo" name="sts_prestador" value="I" required {% if prestador.sts_prestador == 'I' %}checked{% endif %}> Inativo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cod_setor">Setor:</label>
+            <select id="cod_setor" name="cod_setor" required>
+                <option value="" disabled>Selecione um setor</option>
+                {% for setor in lst_setores %}
+                    <option value="{{ setor.idt_setor }}" {% if setor.idt_setor == prestador.cod_setor %}selected{% endif %}>
+                        {{ setor.sgl_setor }} - {{ setor.nme_setor }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <button type="button" class="btn btn-secondary" onclick="window.open('/adm/prestador/atualizar', '_self')">Cancelar</button>
+    </form>
+
+    <div id="mensagem" class="mensagem-retorno {{ css_msg }}">{{ msg }}</div>
+</section>
+{% endblock %}

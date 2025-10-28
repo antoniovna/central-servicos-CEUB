@@ -97,15 +97,67 @@ def roda_atualizar():
                            filtro_usado=filtro_usado)
 
 
-@bp_loc.route('/excluir/<int:idt>')  # /admin/locais/excluir/<idt>
+@bp_loc.route('/excluir/<int:idt>')
 def excluir(idt):
     dao = LocaisDAO()
-
     if dao.delete(idt):
         msg = 'Local excluído com sucesso!'
         css_msg = "sucesso"
     else:
-        msg = 'Falha ao excluir! Verifique dependências!'
+        msg = 'Falha ao tentar excluir local! Verifique se existe alguma dependência!'
         css_msg = "erro"
 
-    return render_template('adm/locais/atualizar.html', msg=msg, css_msg=css_msg, locais=[], setores=[], filtro_usado='')
+    locais = dao.read_all()
+    return render_template('adm/locais/atualizar.html', msg=msg, css_msg=css_msg, locais=locais, filtro_usado='')
+
+@bp_loc.route('/alterar/<int:idt>')  # /adm/locais/alterar/número
+def alterar(idt):
+    dao_local = LocaisDAO()
+    dao_setor = SetorDAO()
+
+    local = dao_local.read_by_idt(idt)
+
+    lst_setores = dao_setor.read_by_filters([('sts_setor', '=', 'A')])
+
+    return render_template(
+        'adm/locais/alterar.html',
+        msg="",
+        css_msg="",
+        loc=local,
+        lst_setores=lst_setores
+    )
+
+
+@bp_loc.route('/salva_alterar', methods=['POST'])  # /admin/empregados/rodar_atualizar
+def salva_alterar():
+    dao_local = LocaisDAO()
+    dao_setor = SetorDAO()
+
+    # Recupera o local existente
+    local = dao_local.read_by_idt(int(request.form['idt_local']))
+
+    # Atualiza campos
+    local.nme_local = request.form['nme_local']
+    local.lat_local = request.form['lat_local']
+    local.lgt_local = request.form['lgt_local']
+    local.sts_local = request.form['sts_local']
+    local.cod_setor = int(request.form['cod_setor']) if request.form['cod_setor'] else None
+    print("veio aqui 1",local)
+    # Atualiza no banco
+    if dao_local.update(local):
+        msg = 'Local alterado com sucesso!'
+        css_msg = "sucesso"
+    else:
+        msg = 'Falha ao tentar alterar local!'
+        css_msg = "erro"
+
+    # Recarrega lista de setores para o select
+    lst_setores = dao_setor.read_by_filters([('sts_setor', '=', 'A')])
+
+    return render_template(
+        'adm/locais/alterar.html',
+        msg=msg,
+        css_msg=css_msg,
+        loc=local,
+        lst_setores=lst_setores
+    )

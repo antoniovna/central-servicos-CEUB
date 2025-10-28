@@ -1,0 +1,65 @@
+{% extends "adm/base_adm.html" %}
+
+{% block content %}
+       <section class="form-section">
+           <h2>Consultar Prestadores</h2>
+           <form id="consultarForm" class="consultar-form" action="/admin/prestador/roda_consultar" method="POST">
+               <div class="form-group">
+                   <label for="nme_prestador">Nome do Prestador:</label>
+                   <input type="text" id="nme_prestador" name="nme_prestador" placeholder="Digite o nome para filtrar">
+               </div>
+               <div class="form-group">
+                   <label for="cod_setor">Setor:</label>
+                   <select id="cod_setor" name="cod_setor">
+                       <option value="">Todos os Setores</option>
+                       {% for setor in setores %}
+                           <option value="{{ setor.idt_setor }}">{{ setor.sgl_setor }} - {{ setor.nme_setor }}</option>
+                       {% endfor %}
+                   </select>
+               </div>
+               <button type="submit" class="btn btn-primary">Buscar</button>
+           </form>
+       </section>
+       <section class="table-section">
+           <p>Total de registros encontrados: <strong>{{ prestadores | length }}</strong></p>
+           <div class="table-container">
+               <table id="prestadoresTable" class="data-table">
+                   <thead>
+                       <tr>
+                           <th>ID</th>
+                           <th>Matrícula</th>
+                           <th>Nome</th>
+                           <th>Email</th>
+                           <th>Telefone</th>
+                           <th>Ramal</th>
+                           <th>Status</th>
+                           <th>Setor</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       {% for pre in prestadores %}
+                       <tr>
+                           <td>{{ pre.idt_prestador }}</td>
+                           <td>{{ pre.mat_prestador }}</td>
+                           <td>{{ pre.nme_prestador }}</td>
+                           <td>{{ pre.eml_prestador }}</td>
+                           <td>{{ pre.tel_prestador }}</td>
+                           <td>{{ pre.rml_prestador }}</td>
+                           <td>{{ "Ativo" if pre.sts_prestador == 'A' else "Inativo" }}</td>
+                           <td>{{ pre.nme_setor if pre.nme_setor else "-" }}</td>
+                       </tr>
+                       {% else %}
+                       <tr>
+                           <td colspan="8">Nenhum prestador encontrado.</td>
+                       </tr>
+                       {% endfor %}
+                   </tbody>
+               </table>
+           </div>
+           {% if filtro_usado %}
+           <div class="filter-footer">
+               <p>Filtro usado: <strong>{{ filtro_usado }}</strong></p>
+           </div>
+           {% endif %}
+       </section>
+{% endblock %}

@@ -58,7 +58,7 @@
                     <td>{{ emp.nme_local if emp.nme_local else "-" }}</td>
                     <td class="action-buttons">
                         <button class="btn btn-edit"
-                                onclick="window.open('/adm/empregados/alterar/{{ emp.idt_empregado }}', '_self')">
+                                onclick="window.open('/admin/empregados/alterar/{{ emp.idt_empregado }}', '_self')">
                             Alterar
                         </button>
                         <button class="btn btn-delete"
@@ -86,14 +86,11 @@
 
 {% endblock %}
 
-
 {% block script %}
-<script>
-function confirmar(idt, nome) {
-    let retorno = confirm('Confirma a exclusão do empregado: ' + nome + ' ?');
-    if (retorno) {
-        window.open('/adm/empregados/excluir/' + idt, '_self');
+    function confirmar(idt, nome) {
+        let retorno = confirm('Confirma a exclusão do empregado: ' + nome + ' ?');
+        if (retorno) {
+            window.open('/admin/empregados/excluir/' + idt, '_self');
+        }
     }
-}
-</script>
 {% endblock %}

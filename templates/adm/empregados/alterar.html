@@ -1,10 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "adm/base_adm.html" %}
 
-</body>
-</html>
+{% block content %}
+<section class="form-section">
+    <h2>Alterar Empregado</h2>
+
+    <form id="empregadoAlterarForm" method="POST" action="/admin/empregados/salva_alterar">
+
+         <div class="form-group">
+                   <label for="idt_empregado">Identificador do Empregado:</label>
+                   <input type="text" name="idt_empregado" value="{{ empregado.idt_empregado }}" readonly>
+         </div>
+        <div class="form-group">
+            <label for="nme_empregado">Nome do Empregado:</label>
+            <input type="text" id="nme_empregado" name="nme_empregado" maxlength="50" required value="{{ empregado.nme_empregado }}">
+        </div>
+
+        <div class="form-group">
+            <label for="mat_empregado">Matrícula:</label>
+            <input type="text" id="mat_empregado" name="mat_empregado" maxlength="10" required value="{{ empregado.mat_empregado }}">
+        </div>
+
+        <div class="form-group">
+            <label for="eml_empregado">E-mail:</label>
+            <input type="email" id="eml_empregado" name="eml_empregado" maxlength="50" required value="{{ empregado.eml_empregado }}">
+        </div>
+
+        <div class="form-group">
+            <label for="tel_empregado">Telefone:</label>
+            <input type="text" id="tel_empregado" name="tel_empregado" maxlength="20" value="{{ empregado.tel_empregado }}">
+        </div>
+
+        <div class="form-group">
+            <label for="rml_empregado">Ramal:</label>
+            <input type="text" id="rml_empregado" name="rml_empregado" maxlength="10" value="{{ empregado.rml_empregado }}">
+        </div>
+
+        <div class="form-group">
+            <label for="pwd_empregado">Nova Senha:</label>
+            <input type="password" id="pwd_empregado" name="pwd_empregado" maxlength="128" placeholder="Deixe em branco para não alterar">
+        </div>
+
+        <div class="form-group">
+            <label>Status:</label>
+            <div class="radio-group">
+                <label for="sts_ativo">
+                    <input type="radio" id="sts_ativo" name="sts_empregado" value="A" required {% if empregado.sts_empregado == 'A' %}checked{% endif %}> Ativo
+                </label>
+                <label for="sts_inativo">
+                    <input type="radio" id="sts_inativo" name="sts_empregado" value="I" required {% if empregado.sts_empregado == 'I' %}checked{% endif %}> Inativo
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cod_local">Local de Trabalho:</label>
+            <select id="cod_local" name="cod_local" required>
+                <option value="" disabled>Selecione um local</option>
+                {% for local in lst_locais %}
+                    <option value="{{ local.idt_local }}">
+                        {{ local.nme_local }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+        <button type="button" class="btn btn-secondary" onclick="window.open('/adm/empregado/atualizar', '_self')">Cancelar</button>
+
+    </form>
+
+    <div id="mensagem" class="mensagem-retorno {{ css_msg }}">{{ msg }}</div>
+</section>
+{% endblock %}

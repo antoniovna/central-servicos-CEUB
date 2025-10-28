@@ -84,13 +84,10 @@
 
 
 {% block script %}
-<script>
 function confirmar(idt, nome) {
-    print("veio aqui")
     let retorno = confirm('Confirma a exclusão do local: ' + nome + ' ?');
     if (retorno) {
-        window.open('/adm/locais/excluir/' + idt, '_self');
+        window.open('/admin/locais/excluir/' + idt, '_self');
     }
 }
-</script>
 {% endblock %}

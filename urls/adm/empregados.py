@@ -102,12 +102,59 @@ def roda_atualizar():
 @bp_emp.route('/excluir/<int:idt>')
 def excluir(idt):
     dao = EmpregadoDAO()
-
     if dao.delete(idt):
         msg = 'Empregado excluído com sucesso!'
         css_msg = "sucesso"
     else:
-        msg = 'Falha ao excluir! Verifique dependências!'
+        msg = 'Falha ao tentar excluir empregado! Verifique se existe alguma dependência.'
         css_msg = "erro"
 
-    return render_template('adm/empregados/atualizar.html', msg=msg, css_msg=css_msg, locais=[], filtro_usado='')
+    empregados = dao.read_all()
+    return render_template(
+        'adm/empregados/atualizar.html',
+        msg=msg,
+        css_msg=css_msg,
+        empregados=empregados,
+        filtro_usado=''
+    )
+
+@bp_emp.route('/alterar/<int:idt>')  # /admin/empregado/alterar/número
+def alterar(idt):
+    dao = EmpregadoDAO()
+    empregado = dao.read_by_idt(idt)
+
+    dao_local = LocaisDAO()
+    lst_locais = dao_local.read_by_filters([('sts_local', '=', 'A')])
+
+    return render_template('adm/empregados/alterar.html', msg="", css_msg="", empregado=empregado,
+                           lst_locais=lst_locais)
+
+
+@bp_emp.route('/salva_alterar', methods=['POST'])  # /admin/empregado/salva_alterar
+def salva_alterar():
+    dao = EmpregadoDAO()
+    emp = dao.read_by_idt(int(request.form['idt_empregado']))
+
+    emp.mat_empregado = request.form['mat_empregado']
+    emp.nme_empregado = request.form['nme_empregado']
+    emp.eml_empregado = request.form['eml_empregado']
+    emp.sts_empregado = request.form['sts_empregado']
+    emp.tel_empregado = request.form['tel_empregado']
+    emp.rml_empregado = request.form['rml_empregado']
+    emp.cod_local = request.form['cod_local']
+
+    # Só altera a senha se uma nova for digitada
+    if request.form['pwd_empregado']:
+        emp.pwd_empregado = request.form['pwd_empregado']
+
+    if dao.update(emp):
+        msg = 'Empregado alterado com sucesso!'
+        css_msg = "sucesso"
+    else:
+        msg = 'Falha ao tentar alterar empregado!'
+        css_msg = "erro"
+
+    dao_local = LocaisDAO()
+    lst_locais = dao_local.read_by_filters([('sts_local', '=', 'A')])
+    return render_template('adm/empregados/alterar.html', msg=msg, css_msg=css_msg, empregado=emp,
+                       lst_locais=lst_locais)
